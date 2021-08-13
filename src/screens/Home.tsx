@@ -36,7 +36,6 @@ export const Home = () => {
 
     function handleAddNewSkill() {
         if (!newSkill) {
-            console.log('sem mais delongas');
             Alert.alert("Falha ao cadastrar sua skill!", errorMessages.emptySkill);
             setInputError(true);
             return;
