@@ -19,6 +19,7 @@ export const Home = () => {
     const [inputError, setInputError] = useState<boolean>(false);
     const [inputWarnning, setInputWarnning] = useState<boolean>(false);
     const [gretting, setGretting] = useState<string>("");
+    const [newUser, setNewUser] = useState<boolean>(true);
 
     useEffect(() => {
         const currentHour = new Date().getHours();
@@ -31,9 +32,15 @@ export const Home = () => {
     }, []);
 
     useEffect(() => {
+        if (!newSkill && !newUser) setInputError(true);
+        
         if (!newSkill) setInputWarnning(false);
-
+        
+        if (mySkills.includes(newSkill)) setInputWarnning(true);
+        
         if (newSkill && newSkill.indexOf(" ") !== 0) setInputError(false);
+
+        setNewUser(false);
     }, [newSkill]);
 
     function handleAddNewSkill() {
