@@ -11,6 +11,8 @@ import {
 import { errorMessages } from '../models/Errors/errorMessages';
 import { Button } from '../components/Button';
 import { SkillCard } from '../components/SkillCard';
+import { grettingMessage } from '../utils/grettingMessage';
+import { useAlert } from '../hooks/useAlert';
 
 export const Home = () => {
     const [newSkill, setNewSkill] = useState<string>("");
@@ -22,13 +24,7 @@ export const Home = () => {
     const [newUser, setNewUser] = useState<boolean>(true);
 
     useEffect(() => {
-        const currentHour = new Date().getHours();
-
-        if (currentHour < 12) setGretting("Good Morning!");
-
-        if (currentHour >= 12 && currentHour < 18) setGretting("Good Afternoon!");
-
-        setGretting("Good Night!");
+        setGretting(grettingMessage());
     }, []);
 
     useEffect(() => {
@@ -45,13 +41,19 @@ export const Home = () => {
 
     function handleAddNewSkill() {
         if (!newSkill || newSkill.indexOf(" ") === 0) {
-            Alert.alert("Falha ao cadastrar sua skill!", errorMessages.emptySkill);
+            useAlert({ 
+                title: "Falha ao cadastrar sua skill!", 
+                message: errorMessages.emptySkill 
+            });
             setInputError(true);
             return;
         }
 
         if (mySkills.includes(newSkill)) {
-            Alert.alert("Falha ao cadastrar sua skill!", errorMessages.invalidSkillValue);
+            useAlert({ 
+                title: "Falha ao cadastrar sua skill!", 
+                message: errorMessages.invalidSkillValue 
+            });
             setInputWarnning(true);
             return;
         }
