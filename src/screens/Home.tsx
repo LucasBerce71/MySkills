@@ -32,10 +32,12 @@ export const Home = () => {
 
     useEffect(() => {
         if (!newSkill) setInputWarnning(false);
+
+        if (newSkill && newSkill.indexOf(" ") !== 0) setInputError(false);
     }, [newSkill]);
 
     function handleAddNewSkill() {
-        if (!newSkill) {
+        if (!newSkill || newSkill.indexOf(" ") === 0) {
             Alert.alert("Falha ao cadastrar sua skill!", errorMessages.emptySkill);
             setInputError(true);
             return;
@@ -82,9 +84,9 @@ export const Home = () => {
                 }
                 placeholder="New Skill"
                 placeholderTextColor="#555"
-                onChangeText={setNewSkill}
+                onChangeText={(value: string) => setNewSkill(value)}
                 value={newSkill}
-            />
+            /> 
 
             {
                 (inputError || inputWarnning) && (
