@@ -78,14 +78,27 @@ export const Home = () => {
             <TextInput
                 style={
                     inputError ? styles.inputError :
-                    inputWarnning ? styles.inputWarnning :
-                    styles.input
+                        inputWarnning ? styles.inputWarnning :
+                            styles.input
                 }
                 placeholder="New Skill"
                 placeholderTextColor="#555"
                 onChangeText={setNewSkill}
                 value={newSkill}
             />
+
+            {
+                (inputError || inputWarnning) && (
+                    <Text
+                        style={inputError
+                            ? styles.labelError
+                            : styles.labelWarnning}
+                    >
+                        {inputError ? errorMessages.emptySkill
+                            : errorMessages.invalidSkillValue}
+                    </Text>
+                )
+            }
 
             <Button type="ADD" disabled={false} onPress={handleAddNewSkill} />
             <Button type="REMOVE" disabled={!hasSkills} onPress={handleRemoveAllSkills} />
@@ -159,4 +172,16 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "orange",
     },
+    labelError: {
+        color: "red",
+        fontWeight: "bold",
+        fontSize: 17,
+        marginTop: 5,
+    },
+    labelWarnning: {
+        color: "orange",
+        fontWeight: "bold",
+        fontSize: 17,
+        marginTop: 5,
+    }
 });
