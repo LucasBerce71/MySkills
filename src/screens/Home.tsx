@@ -52,8 +52,8 @@ export const Home = () => {
             useAlert({
                 title: "Falha ao cadastrar sua skill!",
                 message: errorMessages.emptySkill,
-                leftButtonOnPress: () => {},
-                rightButtonOnPress: () => {}
+                leftButtonOnPress: () => { },
+                rightButtonOnPress: () => { }
             });
             setInputError(true);
             return;
@@ -63,8 +63,8 @@ export const Home = () => {
             useAlert({
                 title: "Falha ao cadastrar sua skill!",
                 message: errorMessages.invalidSkillValue,
-                leftButtonOnPress: () => {},
-                rightButtonOnPress: () => {}
+                leftButtonOnPress: () => { },
+                rightButtonOnPress: () => { }
             });
             setInputWarnning(true);
             return;
@@ -80,21 +80,30 @@ export const Home = () => {
     }
 
     const handleRemoveAllSkills = useCallback(() => {
-        setMySkills([]);
-        setNewSkill("");
-        setHassSkills(false);
-        setInputError(false);
-        setInputWarnning(false);
+        useAlert({
+            title: 'Excluir todas as skills!',
+            message: 'Você realmente deseja excluir todas as skills da sua lista?',
+            leftButtonText: 'Não',
+            leftButtonOnPress: () => { },
+            rightButtonText: 'Sim',
+            rightButtonOnPress: () => {
+                setMySkills([]);
+                setNewSkill("");
+                setHassSkills(false);
+                setInputError(false);
+                setInputWarnning(false);
+            }
+        });
     }, []);
 
     const removeUniqueSkill = useCallback((item: string) => {
         useAlert({
-            title: `Excluir a skill ${item}`,
+            title: `Excluir a skill ${item}!`,
             message: `Você realmente deseja excluir a skill ${item} da sua lista?`,
             leftButtonText: 'Não',
-            leftButtonOnPress: () => {},
+            leftButtonOnPress: () => { },
             rightButtonText: 'Sim',
-            rightButtonOnPress: () => setMySkills((oldState: string[]) => 
+            rightButtonOnPress: () => setMySkills((oldState: string[]) =>
                 oldState.filter((skill: string) => skill !== item))
         })
     }, []);
@@ -148,9 +157,9 @@ export const Home = () => {
                         keyExtractor={item => item}
                         bounces
                         renderItem={({ item }) =>
-                            <SkillCard 
-                                skill={item} 
-                                onPress={() => removeUniqueSkill(item)} 
+                            <SkillCard
+                                skill={item}
+                                onPress={() => removeUniqueSkill(item)}
                             />
                         }
                     />
