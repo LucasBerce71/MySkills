@@ -1,8 +1,8 @@
-import React, { 
-    useState, 
-    useCallback, 
-    useEffect, 
-    useRef 
+import React, {
+    useState,
+    useCallback,
+    useEffect,
+    useRef
 } from 'react';
 
 import {
@@ -51,7 +51,9 @@ export const Home = () => {
         if (!newSkill || verifyWhiteSpaces(newSkill)) {
             useAlert({
                 title: "Falha ao cadastrar sua skill!",
-                message: errorMessages.emptySkill
+                message: errorMessages.emptySkill,
+                leftButtonOnPress: () => {},
+                rightButtonOnPress: () => {}
             });
             setInputError(true);
             return;
@@ -60,7 +62,9 @@ export const Home = () => {
         if (verifySkillExists(mySkills, newSkill)) {
             useAlert({
                 title: "Falha ao cadastrar sua skill!",
-                message: errorMessages.invalidSkillValue
+                message: errorMessages.invalidSkillValue,
+                leftButtonOnPress: () => {},
+                rightButtonOnPress: () => {}
             });
             setInputWarnning(true);
             return;
@@ -81,6 +85,18 @@ export const Home = () => {
         setHassSkills(false);
         setInputError(false);
         setInputWarnning(false);
+    }, []);
+
+    const removeUniqueSkill = useCallback((item: string) => {
+        useAlert({
+            title: `Excluir a skill ${item}`,
+            message: `Você realmente deseja excluir a skill ${item} da sua lista?`,
+            leftButtonText: 'Não',
+            leftButtonOnPress: () => {},
+            rightButtonText: 'Sim',
+            rightButtonOnPress: () => setMySkills((oldState: string[]) => 
+                oldState.filter((skill: string) => skill !== item))
+        })
     }, []);
 
     return (
@@ -131,8 +147,11 @@ export const Home = () => {
                         data={mySkills}
                         keyExtractor={item => item}
                         bounces
-                        renderItem={({ item }) => 
-                            <SkillCard skill={item} />
+                        renderItem={({ item }) =>
+                            <SkillCard 
+                                skill={item} 
+                                onPress={() => removeUniqueSkill(item)} 
+                            />
                         }
                     />
                 ) : (

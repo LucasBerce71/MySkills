@@ -15,11 +15,11 @@ export function useAlert({
         [
             { 
                 text: leftButtonText || "Cancelar", 
-                onPress: () => leftButtonOnPress || console.log("leftButton onPressed!") 
+                onPress: () => leftButtonOnPress()
             },
             { 
                 text: rightButtonText || "Entendi",
-                onPress: () => rightButtonOnPress || console.log("rightButton onPressed!") 
+                onPress: () => rightButtonOnPress()
             },
         ]
     );
