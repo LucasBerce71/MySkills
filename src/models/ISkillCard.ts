@@ -1,1 +1,3 @@
-export type ISkillCard = { skill: string };
+export type ISkillCard = { 
+    skill: string,
+};

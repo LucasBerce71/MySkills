@@ -1,9 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { 
+    useState, 
+    useCallback, 
+    useEffect, 
+    useRef 
+} from 'react';
+
 import {
     StyleSheet,
     View,
     Text,
-    Alert,
     FlatList,
     TextInput,
     Platform,
@@ -26,22 +31,20 @@ export const Home = () => {
     const [inputError, setInputError] = useState<boolean>(false);
     const [inputWarnning, setInputWarnning] = useState<boolean>(false);
     const [gretting, setGretting] = useState<string>("");
-    const [newUser, setNewUser] = useState<boolean>(true);
+
+    const inputSkillRef = useRef<TextInput>(null);
 
     useEffect(() => {
         setGretting(grettingMessage());
     }, []);
 
     useEffect(() => {
-        if (!newSkill && !newUser) setInputError(true);
-
         if (!newSkill) setInputWarnning(false);
 
         if (verifySkillExists(mySkills, newSkill)) setInputWarnning(true);
 
         if (newSkill && !verifyWhiteSpaces(newSkill)) setInputError(false);
 
-        setNewUser(false);
     }, [newSkill]);
 
     function handleAddNewSkill() {
@@ -127,7 +130,9 @@ export const Home = () => {
                     <FlatList
                         data={mySkills}
                         keyExtractor={item => item}
-                        renderItem={({ item }) => <SkillCard skill={item} />}
+                        renderItem={({ item }) => 
+                            <SkillCard skill={item} />
+                        }
                     />
                 ) : (
                     <Text style={styles.textNotSkill}>
