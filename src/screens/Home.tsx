@@ -13,6 +13,11 @@ import { Button } from '../components/Button';
 import { SkillCard } from '../components/SkillCard';
 import { grettingMessage } from '../utils/grettingMessage';
 import { useAlert } from '../hooks/useAlert';
+import { FriendlyName } from '../components/FriendlyName';
+import { verifyWhiteSpaces } from '../utils/verifyWhiteSpaces';
+import { verifySkillExists } from '../utils/verifySkillExists';
+import { SkillCount } from '../components/SkillCount';
+import { skillCount } from '../utils/skillCount';
 
 export const Home = () => {
     const [newSkill, setNewSkill] = useState<string>("");
@@ -29,30 +34,30 @@ export const Home = () => {
 
     useEffect(() => {
         if (!newSkill && !newUser) setInputError(true);
-        
+
         if (!newSkill) setInputWarnning(false);
-        
-        if (mySkills.includes(newSkill)) setInputWarnning(true);
-        
-        if (newSkill && newSkill.indexOf(" ") !== 0) setInputError(false);
+
+        if (!verifySkillExists(mySkills, newSkill)) setInputWarnning(true);
+
+        if (newSkill && verifyWhiteSpaces(newSkill)) setInputError(false);
 
         setNewUser(false);
     }, [newSkill]);
 
     function handleAddNewSkill() {
-        if (!newSkill || newSkill.indexOf(" ") === 0) {
-            useAlert({ 
-                title: "Falha ao cadastrar sua skill!", 
-                message: errorMessages.emptySkill 
+        if (!newSkill || !verifyWhiteSpaces(newSkill)) {
+            useAlert({
+                title: "Falha ao cadastrar sua skill!",
+                message: errorMessages.emptySkill
             });
             setInputError(true);
             return;
         }
 
-        if (mySkills.includes(newSkill)) {
-            useAlert({ 
-                title: "Falha ao cadastrar sua skill!", 
-                message: errorMessages.invalidSkillValue 
+        if (!verifySkillExists(mySkills, newSkill)) {
+            useAlert({
+                title: "Falha ao cadastrar sua skill!",
+                message: errorMessages.invalidSkillValue
             });
             setInputWarnning(true);
             return;
@@ -85,6 +90,8 @@ export const Home = () => {
                 {gretting}
             </Text>
 
+            <FriendlyName friendlyNameValue={newSkill} />
+
             <TextInput
                 style={
                     inputError ? styles.inputError :
@@ -95,7 +102,7 @@ export const Home = () => {
                 placeholderTextColor="#555"
                 onChangeText={(value: string) => setNewSkill(value)}
                 value={newSkill}
-            /> 
+            />
 
             {
                 (inputError || inputWarnning) && (
@@ -113,11 +120,10 @@ export const Home = () => {
             <Button type="ADD" disabled={false} onPress={handleAddNewSkill} />
             <Button type="REMOVE" disabled={!hasSkills} onPress={handleRemoveAllSkills} />
 
-            <Text style={[styles.title, { marginVertical: 50 }]}>
-                My Skills
-            </Text>
+            <SkillCount groupSkills={mySkills} />
+
             {
-                mySkills.length ? (
+                skillCount(mySkills) ? (
                     <FlatList
                         data={mySkills}
                         keyExtractor={item => item}
@@ -141,9 +147,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 30
     },
     title: {
-        color: "#FFF",
+        color: '#FFF',
         fontSize: 24,
-        fontWeight: "bold",
+        fontWeight: 'bold',
     },
     textNotSkill: {
         color: "#FFF",

@@ -1,0 +1,1 @@
+export type ISkillCount = { groupSkills: string[] };

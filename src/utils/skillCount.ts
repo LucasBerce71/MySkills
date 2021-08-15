@@ -1,0 +1,1 @@
+export const skillCount = (groupSkill: string[]) => groupSkill.length;
