@@ -23,6 +23,7 @@ import { verifyWhiteSpaces } from '../utils/verifyWhiteSpaces';
 import { verifySkillExists } from '../utils/verifySkillExists';
 import { SkillCount } from '../components/SkillCount';
 import { skillCount } from '../utils/skillCount';
+import SnackbarComponent from 'react-native-snackbar-component';
 
 export const Home = () => {
     const [newSkill, setNewSkill] = useState<string>("");
@@ -31,6 +32,8 @@ export const Home = () => {
     const [inputError, setInputError] = useState<boolean>(false);
     const [inputWarnning, setInputWarnning] = useState<boolean>(false);
     const [gretting, setGretting] = useState<string>("");
+    const [snackBarDisplay, setSnackBarDisplay] = useState<boolean>(false);
+    const [snackBarMessage, setSnackBarMessage] = useState<string>("");
 
     const inputSkillRef = useRef<TextInput>(null);
 
@@ -77,6 +80,9 @@ export const Home = () => {
         setMySkills((oldState: string[]) => [...oldState, newSkill]);
 
         setHassSkills(true)
+
+        setSnackBarDisplay(true);
+        setSnackBarMessage('Skill adicionada com sucesso!');
     }
 
     const handleRemoveAllSkills = useCallback(() => {
@@ -92,6 +98,8 @@ export const Home = () => {
                 setHassSkills(false);
                 setInputError(false);
                 setInputWarnning(false);
+                setSnackBarDisplay(true);
+                setSnackBarMessage('Todas as skills foram removidas da sua lista!');
             }
         });
     }, []);
@@ -103,8 +111,13 @@ export const Home = () => {
             leftButtonText: 'Não',
             leftButtonOnPress: () => { },
             rightButtonText: 'Sim',
-            rightButtonOnPress: () => setMySkills((oldState: string[]) =>
-                oldState.filter((skill: string) => skill !== item))
+            rightButtonOnPress: () => {
+                setMySkills((oldState: string[]) =>
+                    oldState.filter((skill: string) => skill !== item));
+                
+                setSnackBarDisplay(true);
+                setSnackBarMessage(`${item} foi removido da sua lista de skills!`);
+            }
         })
     }, []);
 
@@ -169,6 +182,12 @@ export const Home = () => {
                     </Text>
                 )
             }
+            <SnackbarComponent
+                visible={snackBarDisplay}
+                textMessage={snackBarMessage}
+                actionHandler={() => setSnackBarDisplay(false)}
+                actionText="Fechar"
+            />
         </View>
     );
 }
