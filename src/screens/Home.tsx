@@ -130,6 +130,7 @@ export const Home = () => {
                     <FlatList
                         data={mySkills}
                         keyExtractor={item => item}
+                        bounces
                         renderItem={({ item }) => 
                             <SkillCard skill={item} />
                         }
