@@ -37,15 +37,15 @@ export const Home = () => {
 
         if (!newSkill) setInputWarnning(false);
 
-        if (!verifySkillExists(mySkills, newSkill)) setInputWarnning(true);
+        if (verifySkillExists(mySkills, newSkill)) setInputWarnning(true);
 
-        if (newSkill && verifyWhiteSpaces(newSkill)) setInputError(false);
+        if (newSkill && !verifyWhiteSpaces(newSkill)) setInputError(false);
 
         setNewUser(false);
     }, [newSkill]);
 
     function handleAddNewSkill() {
-        if (!newSkill || !verifyWhiteSpaces(newSkill)) {
+        if (!newSkill || verifyWhiteSpaces(newSkill)) {
             useAlert({
                 title: "Falha ao cadastrar sua skill!",
                 message: errorMessages.emptySkill
@@ -54,7 +54,7 @@ export const Home = () => {
             return;
         }
 
-        if (!verifySkillExists(mySkills, newSkill)) {
+        if (verifySkillExists(mySkills, newSkill)) {
             useAlert({
                 title: "Falha ao cadastrar sua skill!",
                 message: errorMessages.invalidSkillValue

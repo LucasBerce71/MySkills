@@ -1,5 +1,5 @@
 export const verifyWhiteSpaces = (value: string) => {
-    if (value.indexOf(" ") === 0) return false;
+    if (value.indexOf(" ") === 0) return true;
     
-    return true;
+    return false;
 }

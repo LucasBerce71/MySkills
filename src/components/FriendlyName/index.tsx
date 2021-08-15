@@ -8,7 +8,7 @@ import { styles } from './styles';
 export const FriendlyName: React.FC<IFriendlyName> = ({ friendlyNameValue }) => {
     return (
         <Text style={styles.FriendlyName}>
-            {friendlyNameValue && verifyWhiteSpaces(friendlyNameValue)
+            {friendlyNameValue && !verifyWhiteSpaces(friendlyNameValue)
                 ?  `Próxima skill: ${friendlyNameValue}`
                 : 'Digite algo...' 
             }

@@ -1,5 +1,5 @@
 export const verifySkillExists = (groupSkill: string[], skillValue: string) => {
-    if (groupSkill.includes(skillValue)) return false;
+    if (groupSkill.includes(skillValue)) return true;
 
-    return true;
+    return false;
 }
